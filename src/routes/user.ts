@@ -1,33 +1,12 @@
 import { Router } from 'express';
-import { User } from '../models/user';
+import { getDefault, getUser, postUser } from '../controllers/user';
 
 const router = Router();
 
-const users: User[] = [];
+router.get('/', getDefault);
 
-router.get('/', (req, res) => {
-	res.render('add-user', { pageTitle: 'Add User', path: '/' });
-});
+router.post('/user', postUser);
 
-router.post('/user', (req, res) => {
-	const username = req.body.username;
-	const id = new Date().toISOString();
-	const newUser: User = {
-		id: id,
-		name: username,
-	};
-	users.push(newUser);
-	res.redirect(`/user/${id}`);
-});
-
-router.get('/user/:id', (req, res) => {
-	const id = req.params.id;
-	const user = users.find(user => user.id === id);
-	res.render('user', {
-		pageTitle: 'User',
-		path: '/user',
-		username: user?.name || '',
-	});
-});
+router.get('/user/:id', getUser);
 
 export default router;
