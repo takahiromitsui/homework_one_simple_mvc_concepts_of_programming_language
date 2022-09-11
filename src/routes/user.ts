@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
 		id: new Date().toISOString(),
 		name: name,
 	};
-	users.push(newUser);
+	res.status(201).json({ message: 'User created', user: newUser });
 });
 
 export default router;
