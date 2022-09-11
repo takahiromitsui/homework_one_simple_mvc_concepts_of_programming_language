@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import path from 'path';
 import { User } from '../models/user';
 
 const router = Router();
@@ -7,7 +6,8 @@ const router = Router();
 const users: User[] = [];
 
 router.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, '../../src/', 'views', 'add-user.html'));
+	// res.sendFile(path.join(__dirname, '../../src/', 'views', 'add-user.html'));
+	res.render('add-user');
 });
 
 router.post('/user', (req, res) => {
