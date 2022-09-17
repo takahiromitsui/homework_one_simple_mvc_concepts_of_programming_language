@@ -1,6 +1,16 @@
-import { createLogger, format, transports } from 'winston';
+import { createLogger, format, LogCallback, Logger, transports } from 'winston';
 
 const { printf, combine, timestamp, colorize, errors } = format;
+
+export enum WinstonLevel {
+	ERROR = 'error',
+	WARN = 'warn',
+	INFO = 'info',
+	HTTP = 'http',
+	VERBOSE = 'verbose',
+	DEBUG = 'debug',
+	SILLY = 'silly',
+}
 
 const logFormat = printf(({ level, message, timestamp, stack }) => {
 	return `${timestamp} ${level}: ${stack || message}`;
@@ -18,3 +28,10 @@ export const logger = createLogger({
 	transports: [new transports.Console()],
 });
 
+export const customLogger = (
+	level: WinstonLevel,
+	message: string,
+	callback?: LogCallback
+): Logger => {
+	return logger.log(level, message, callback);
+};
