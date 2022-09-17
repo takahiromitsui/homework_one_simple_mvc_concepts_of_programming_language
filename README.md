@@ -27,11 +27,6 @@ Install dependencies
   yarn install
 ```
 
-Run a compile based on a backwards look through the fs for a tsconfig.json
-
-```bash
-  tsc
-```
 
 Start the server
 
