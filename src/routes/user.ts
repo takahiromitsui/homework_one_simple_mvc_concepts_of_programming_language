@@ -7,8 +7,14 @@ const users: User[] = [];
 
 router.get('/', getDefault());
 
-router.post('/user', postUser(users, new Date().toISOString()));
+router.post(
+	'/user',
+	postUser({
+		users: users,
+		userID: new Date().toISOString(),
+	})
+);
 
-router.get('/user/:id', getUser(users));
+router.get('/user/:id', getUser({ users: users }));
 
 export default router;

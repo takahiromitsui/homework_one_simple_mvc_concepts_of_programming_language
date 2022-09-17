@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { UserControllerConf } from '../confObj/userControllerConf';
 import { customLogger, WinstonLevel } from '../logger';
 import { User } from '../models/user';
 
@@ -14,22 +15,30 @@ export const getDefault = (): ExpressRouteFunc => {
 	};
 };
 
-export const postUser = (users: User[], userID: string): ExpressRouteFunc => {
+export const postUser = (
+	userControllerConf: UserControllerConf
+): ExpressRouteFunc => {
 	return (req: Request, res: Response) => {
 		const username = req.body.username;
+		if (!userControllerConf.userID) {
+			customLogger(WinstonLevel.ERROR, 'Missing args');
+			return res.redirect('/');
+		}
 		const newUser: User = {
-			id: userID,
+			id: userControllerConf.userID,
 			name: username,
 		};
-		users.push(newUser);
-		res.redirect(`/user/${userID}`);
+		userControllerConf.users.push(newUser);
+		res.redirect(`/user/${userControllerConf.userID}`);
 	};
 };
 
-export const getUser = (users: User[]): ExpressRouteFunc => {
+export const getUser = (
+	userControllerConf: UserControllerConf
+): ExpressRouteFunc => {
 	return (req: Request, res: Response) => {
 		const userID = req.params.id;
-		const user = users.find(user => user.id === userID);
+		const user = userControllerConf.users.find(user => user.id === userID);
 		if (!user) {
 			customLogger(WinstonLevel.ERROR, 'User not exist');
 			return res.redirect('/');
