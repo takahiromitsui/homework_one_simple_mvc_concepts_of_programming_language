@@ -17,6 +17,7 @@ const logFormat = printf(({ level, message, timestamp, stack }) => {
 });
 
 export const logger = createLogger({
+	level: WinstonLevel.DEBUG,
 	format: combine(
 		errors({ stack: true }),
 		colorize(),
